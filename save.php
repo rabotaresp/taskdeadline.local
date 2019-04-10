@@ -1,30 +1,20 @@
 <?php
 if ($_GET) {
-    if (isset($_GET['ind'])) {
+    if (isset($_GET['inm'])) {
         $fw = fopen("save.txt", 'r');
-        $count_del_ind = 0;
+        $count_read_line =0;
         $line = [];
         while ($read_line = fgets($fw)) {
-            if ($count_del_ind = $_GET['ind']) {
-                $line[] = $_GET['task'].$_GET['deadline'];
-            }
-            else{
-                $line[]=$read_line;
-            }
-            $count_del_ind++;
-
+           $line[]=trim($read_line);
         }
         fclose($fw);
+        $line[$_GET['inm']] = $_GET['task'].'|'.$_GET['deadline'];
+
         $fw = fopen("save.txt", 'w');
         foreach ($line as $value) {
-            if ($value != null) {
-                fwrite($fw, $value);
-            }
+                fwrite($fw, $value.PHP_EOL);
         }
         fclose($fw);
     }
 }
-
-
-
 header('location: index.php');
